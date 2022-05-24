@@ -11,5 +11,6 @@ namespace ApiCrud.Contracts
         public Task UpdateGroup(int id, GroupForUpdateDto group);
         public Task DeleteGroup(int id);
         public Task<IEnumerable<GroupWithUser>> GetGroupUsersMultipleResults(int id);
+        public bool GetGroupBylvl(int field);
     }
 }

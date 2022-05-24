@@ -91,5 +91,12 @@ namespace ApiCrud.Repository
                 await connection.ExecuteAsync(query, new { id });
             }
         }
+        public bool GetActionField(int id)
+        {
+            var fieldExists = "SELECT COUNT(1) FROM action_field Where id=@id";
+            using var connection = _context.CreateConnection();
+            var exists = connection.ExecuteScalar<bool>(fieldExists, new { id });
+            return exists;
+        }
     }
 }

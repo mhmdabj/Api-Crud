@@ -72,7 +72,7 @@ namespace ApiCrud.Controllers
                 if (dbGroup == null)
                     return NotFound();
                 await _groupRepo.UpdateGroup(id, group);
-                return NoContent();
+                return StatusCode(201, "Updated successfully");
             }
             catch (Exception ex)
             {
@@ -89,7 +89,7 @@ namespace ApiCrud.Controllers
                 if (dbGroup == null)
                     return NotFound();
                 await _groupRepo.DeleteGroup(id);
-                return NoContent();
+                return StatusCode(200, "Deleted successfully");
             }
             catch (Exception ex)
             {

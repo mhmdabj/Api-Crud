@@ -14,9 +14,11 @@ namespace ApiCrud.Controllers
     public class PermissionController : ControllerBase
     {
         private readonly IPermissionRepository _permissionRepo;
-        public PermissionController(IPermissionRepository permissionRepo)
+        private readonly IGroupRepository _groupRepo;
+        public PermissionController(IPermissionRepository permissionRepo, IGroupRepository groupRepo)
         {
             _permissionRepo = permissionRepo;
+            _groupRepo = groupRepo;
         }
         [HttpGet]
         public async Task<IActionResult> GetAllPermissions()
@@ -53,6 +55,12 @@ namespace ApiCrud.Controllers
         {
             try
             {
+                var groupExists = _groupRepo.GetGroupBylvl(permission.GroupLevel);
+                var fieldExists = _permissionRepo.GetActionField(permission.ActionField);
+                if (!groupExists)
+                    return StatusCode(404, "Group doesn't exists.");
+                if (!fieldExists)
+                    return StatusCode(404, "Field doesn't exists");
                 var createdPermission = await _permissionRepo.CreatePermission(permission);
                 return CreatedAtRoute("PermissionById", new { id = createdPermission.Id }, createdPermission);
             }
@@ -67,11 +75,17 @@ namespace ApiCrud.Controllers
         {
             try
             {
+                var groupExists = _groupRepo.GetGroupBylvl(permission.GroupLevel);
+                var fieldExists = _permissionRepo.GetActionField(permission.ActionField);
+                if (!groupExists)
+                    return StatusCode(404, "Group doesn't exists.");
+                if (!fieldExists)
+                    return StatusCode(404, "Field doesn't exists");
                 var dbPermission = await _permissionRepo.GetPermission(id);
                 if (dbPermission == null)
                     return NotFound();
                 await _permissionRepo.UpdatePermission(id, permission);
-                return NoContent();
+                return StatusCode(201, "Updated successfully");
             }
             catch (Exception ex)
             {
@@ -88,7 +102,7 @@ namespace ApiCrud.Controllers
                 if (dbPermission == null)
                     return NotFound();
                 await _permissionRepo.DeletePermission(id);
-                return NoContent();
+                return StatusCode(200, "Deleted successfully");
             }
             catch (Exception ex)
             {

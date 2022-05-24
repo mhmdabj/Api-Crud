@@ -11,5 +11,6 @@ namespace ApiCrud.Contracts
         public Task UpdatePermission(int id, PermissionForUpdateDto permission);
         public Task DeletePermission(int id);
         public bool GetPermissionbyUser(int id, int action);
+        public bool GetActionField(int name);
     }
 }

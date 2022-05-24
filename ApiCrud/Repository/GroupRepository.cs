@@ -32,6 +32,14 @@ namespace ApiCrud.Repository
             return group;
         }
 
+        public bool GetGroupBylvl(int field)
+        {
+            var groupExists = "SELECT COUNT(1) FROM user_group Where group_lvl=@field";
+            using var connection = _context.CreateConnection();
+            var exists = connection.ExecuteScalar<bool>(groupExists, new { field });
+            return exists;
+        }
+
         public async Task<Group> CreateGroup(GroupForCreationDto group)
         {
             var query = "INSERT INTO user_group (Name, group_lvl) VALUES (@Name,@group_lvl);SELECT LAST_INSERT_ID();";

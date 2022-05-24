@@ -1,5 +1,6 @@
 ﻿using ApiCrud.Contracts;
 using ApiCrud.Dto;
+using ApiCrud.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -61,7 +62,7 @@ namespace ApiCrud.Controllers
         {
             try
             {
-                var user = await _userRepo.GetUser(id);
+                var user = await _userRepo.GetUserInfo(id);
                 if (user == null)
                     return NotFound();
                 return Ok(user);
