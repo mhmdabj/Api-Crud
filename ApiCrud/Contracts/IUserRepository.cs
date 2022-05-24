@@ -7,8 +7,10 @@ namespace ApiCrud.Contracts
     {
         public Task<IEnumerable<GetUser>> GetAllUsers();
         public Task<GetUser> GetUser(int id);
+        public Task<GetUserInfo> GetUserInfo(int id);
         public Task<User> CreateUser(UserForCreationDto user);
         public Task UpdateUser(int id, UserForUpdateDto user);
         public Task DeleteUser(int id);
+        public Task AddUserToGroup(int id, UserForGroupDto user);
     }
 }

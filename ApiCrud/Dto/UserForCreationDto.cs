@@ -8,6 +8,10 @@
         public string? Password_Hash { get; set; } = string.Empty;
         public int GroupId { get; set; }
     }
+    public class UserForGroupDto
+    {
+        public int GroupId { get; set; }
+    }
 
     public class UserForCreationDtoGoogle
     {

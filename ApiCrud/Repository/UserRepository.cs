@@ -32,12 +32,21 @@ namespace ApiCrud.Repository
 
         public async Task<GetUser> GetUser(int id)
         {
-            var query = "SELECT user.id as Id, user.name as Name,user.username as Username,user.email as Email, user.accountId as AccId, user.token as Token, user_group.group_lvl as group_lvl, user_group.name as group_name FROM `user`" +
-                " INNER JOIN user_group_link ON user.id=user_group_link.user_id" +
-                " INNER JOIN user_group ON user_group.id=user_group_link.group_id"+
-                " Where user.id=@id";
+            var query = "SELECT Id, Name, Username, Email FROM `user` Where id=@id";
             using var connection = _context.CreateConnection();
             var user = await connection.QuerySingleOrDefaultAsync<GetUser>(query, new { id });
+            System.Diagnostics.Debug.WriteLine(user);
+            return user;
+        }
+
+        public async Task<GetUserInfo> GetUserInfo(int id)
+        {
+            var query = "SELECT user.id as Id, user.name as Name,user.username as Username,user.email as Email, user.accountId as AccId, user.token as Token, user_group.group_lvl as group_lvl, user_group.name as group_name FROM `user`" +
+                " INNER JOIN user_group_link ON user.id=user_group_link.user_id" +
+                " INNER JOIN user_group ON user_group.id=user_group_link.group_id" +
+                " Where user.id=@id";
+            using var connection = _context.CreateConnection();
+            var user = await connection.QuerySingleOrDefaultAsync<GetUserInfo>(query, new { id });
             System.Diagnostics.Debug.WriteLine(user);
             return user;
         }
@@ -74,6 +83,18 @@ namespace ApiCrud.Repository
                     GroupId = user.GroupId,
                 };
                 return createdUser;
+            }
+        }
+        public async Task AddUserToGroup(int id,UserForGroupDto user)
+        {
+            var parameters = new DynamicParameters();
+            parameters.Add("Id", id, DbType.Int32);
+            parameters.Add("groupId", user.GroupId, DbType.Int64);
+
+            var query = "INSERT INTO user_group_link (user_id, group_id) VALUES (@Id, @groupId)";
+            using (var connection = _context.CreateConnection())
+            {
+                await connection.ExecuteAsync(query, parameters);
             }
         }
         public async Task UpdateUser(int id, UserForUpdateDto user)
