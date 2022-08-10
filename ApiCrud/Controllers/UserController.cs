@@ -29,9 +29,6 @@ namespace ApiCrud.Controllers
         {
             try
             {
-                var UserPermission = UserPermissions.user_add;
-                var claims = this.User.Claims;
-                var id = claims.Where(x => x.Type == "Id").First();
                 var user = await _userRepo.GetAllUsers();
                 return Ok(user);
             }
@@ -142,15 +139,15 @@ namespace ApiCrud.Controllers
                 var hasGroup = await _userRepo.GetUserInfo(id);
                 if (hasGroup != null)
                     return StatusCode(409, "User has already added to a group.");
-                var UserPermission = (int)UserPermissions.user_add;
+                /*var UserPermission = (int)UserPermissions.user_add;
                 var idClaim = User.Claims.First(x => x.Type == "Id");
                 var permission = _permissionRepo.GetPermissionbyUser(int.Parse(idClaim.Value), UserPermission);
                 if (permission)
-                {
+                {*/
                     await _userRepo.AddUserToGroup(id, user);
                     return StatusCode(201, "Added successfully");
-                }
-                else return StatusCode(403, "Forbidden");
+                /*}
+                else return StatusCode(403, "Forbidden");*/
             }
             catch (Exception ex)
             {

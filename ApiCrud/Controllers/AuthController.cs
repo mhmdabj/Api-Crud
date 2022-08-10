@@ -119,7 +119,7 @@ namespace ApiCrud.Controllers
             // send email
             using var smtp = new SmtpClient();
             smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("lina.hansen25@ethereal.email", "1Yc3U1ECDdcY1ZfHtB");
+            smtp.Authenticate("london.schowalter40@ethereal.email", "1725eFvttgF5C42Y1p");
             smtp.Send(email);
             smtp.Disconnect(true);
             return Ok(new { message = "Please check your email for password reset instructions" });
